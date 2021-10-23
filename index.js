@@ -16,33 +16,54 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect((err)=>{
     const userCollection = client.db('appleuser').collection("info")
     console.log("hitting");
-// 1--------------------------  post-----------------------
-app.post('/adduser',(req,res)=>{
+// 1--------------------------  post method     -----------------------
+app.post('/adduser', async(req,res)=>{
     const info = req.body
-const result=    userCollection.insertOne(info)
-    .then(()=>{
+const result=   await userCollection.insertOne(info)
+   
        res.json(result)
-            })
+           
         })
-// 2------------------post end-----------------
+// 2------------------post method end-----------------
 
-// ----------------get----------------
+// 3----------------get method----------------
 app.get('/users', async(req,res)=>{
     const result = await userCollection.find({}).toArray();
     res.send(result)
 })
-// 3------------get end----------------
+// 4------------get method end----------------
 
-// 4------------------delete----------------
+// 5------------------delete----------------
 app.delete('/users/:id' , async(req,res)=>{
    const query = req.params.id
    const result = await userCollection.deleteOne({_id:ObjectId(query)})
    res.send(result)
   
 })
-// 5-----------------delete end--------------------------
+// 6--------------------delete method end-------------------
 
-// -------------------signle user-------------------
+// 7--------------------update database put method-----------------
+app.put('/update/:id',async(req,res)=>{
+    const options = { upsert: true };
+    const updateuser = req.body
+    console.log(req.body);
+    const id= req.params.id
+    const filter = {_id:ObjectId(id)}
+    
+    const updateDoc = {
+        $set: {
+         name: updateuser.name,
+         email: updateuser.email
+        },
+      };
+      const result = await userCollection.updateOne(filter,updateDoc,options)
+   console.log("updating",id);
+    res.send(result)
+})
+// 8--------------put method end-----------------
+
+
+// 9-------------------signle user-------------------
 app.get('/single/:id', async (req,res)=>{
     const result = await userCollection.findOne({_id:ObjectId(req.params.id)})
     res.send(result)
@@ -57,16 +78,6 @@ app.get('/single/:id', async (req,res)=>{
 app.get("/",(req,res)=>{
     res.send('server is working')
 })
-
-
-
-
-
-
-
-
-
-
 
 
 
