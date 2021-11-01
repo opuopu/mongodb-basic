@@ -68,6 +68,8 @@ app.get('/single/:id', async (req,res)=>{
     const result = await userCollection.findOne({_id:ObjectId(req.params.id)})
     res.send(result)
 })
+//     --------------------------------query my order------------------------
+//     cheek 67-7 video...........
       
      
     })
