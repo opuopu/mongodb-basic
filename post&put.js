@@ -27,3 +27,14 @@ body:JSON.stringify(appleuser)
 e.preventDefault()
 
     }
+    
+//     ------------------------------query by email frontend---------------------------
+    const [appoitments,setappoitments] = useState()
+console.log(appoitments);
+
+useEffect(()=>{
+fetch(`http://localhost:5000/query?email=${user?.email}`)
+.then(res =>res.json())
+.then(data => setappoitments(data))
+
+},[])
