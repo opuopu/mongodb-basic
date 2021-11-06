@@ -70,6 +70,14 @@ app.get('/single/:id', async (req,res)=>{
 })
 //     --------------------------------query my order------------------------
 //     cheek 67-7 video...........
+    // ---------------------------query by email-----------
+app.get('/query/', async(req,res)=>{
+  const email = req.query.email
+  // const query = {email:email}
+
+  const result = await appoitmentcollection.find({email:email}).toArray()
+  res.send(result)
+})
       
      
     })
