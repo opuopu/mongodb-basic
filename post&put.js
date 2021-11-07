@@ -38,3 +38,28 @@ fetch(`http://localhost:5000/query?email=${user?.email}`)
 .then(data => setappoitments(data))
 
 },[])
+    
+//     -------------------------------cheek exist in database and send data to database if exist nothing working ---frontend----------
+    এইখানে অনলি পূট মেথড লিখতে হবে বাকি কাজ backend  এ
+    const saveUser = (email,displayName,method) =>{
+const user = {email,displayName}
+fetch(`http://localhost:5000/adduser`,{
+    method:method,
+    headers:{
+        'content-type':'application/json'
+    },
+    body:JSON.stringify(user)
+})
+}
+//     ---------------------------cheek exist backend code--------------------------------
+//     এইখানে filter by email  দিকে চেক করছি ডাটাবেসে আগে আছে কিনা থাকলে add  করবে না থাকলে  add  করবে না
+    app.put('/adduser', async(req,res)=>{
+ 
+  const filter = {email:req.body.email}
+  const options = {upsert:true};
+  const updatedoc ={$set: req.body}
+  const result = await newUser.updateOne(filter,updatedoc,options)
+res.send(result)
+})
+    
+    
